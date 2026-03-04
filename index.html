@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LuxeVault.in — Premium Luxury Essentials</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+/* =====================
+   LUXURY THEME
+===================== */
+
+:root{
+  --gold:#c9a84c;
+  --cream:#f0ece0;
+  --black:#0b0b0b;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Inter,sans-serif;
+  background:var(--black);
+  color:var(--cream);
+  line-height:1.6;
+}
+
+h1,h2,h3{
+  font-family:"Cormorant Garamond",serif;
+  letter-spacing:.5px;
+}
+
+/* =====================
+ HEADER
+===================== */
+
+header{
+  text-align:center;
+  padding:30px 15px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+header h1{
+  font-size:32px;
+  color:var(--gold);
+}
+
+.tagline{
+  opacity:.8;
+  font-size:14px;
+}
+
+/* =====================
+ FILTERS
+===================== */
+
+.filters{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  padding:15px;
+  flex-wrap:wrap;
+}
+
+.filter-btn{
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  padding:8px 14px;
+  cursor:pointer;
+  border-radius:30px;
+  transition:.3s;
+}
+
+.filter-btn:hover,
+.filter-btn.active{
+  background:var(--gold);
+  color:#000;
+}
+
+/* =====================
+ PRODUCT GRID
+===================== */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:18px;
+  padding:20px;
+}
+
+.card{
+  background:#121212;
+  border-radius:12px;
+  overflow:hidden;
+  transition:.3s;
+  animation:fade .6s ease;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+
+.card-body{
+  padding:12px;
+}
+
+.price{
+  color:var(--gold);
+  margin:6px 0;
+  font-weight:500;
+}
+
+.add-btn{
+  width:100%;
+  padding:10px;
+  border:none;
+  background:var(--gold);
+  color:#000;
+  cursor:pointer;
+  border-radius:6px;
+  font-weight:600;
+}
+
+/* =====================
+ CART BUTTON
+===================== */
+
+.cart-float{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  background:var(--gold);
+  color:#000;
+  padding:14px;
+  border-radius:50%;
+  cursor:pointer;
+  font-weight:bold;
+  z-index:999;
+}
+
+.cart-count{
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  background:red;
+  color:#fff;
+  font-size:12px;
+  padding:3px 7px;
+  border-radius:50%;
+}
+
+/* =====================
+ MODAL
+===================== */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  padding:15px;
+  z-index:1000;
+}
+
+.modal-content{
+  background:#111;
+  width:100%;
+  max-width:500px;
+  max-height:90vh;
+  overflow:auto;
+  border-radius:12px;
+  padding:20px;
+}
+
+/* =====================
+ CART ITEMS
+===================== */
+
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:12px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding-bottom:8px;
+}
+
+.qty-btn{
+  background:var(--gold);
+  border:none;
+  padding:3px 8px;
+  margin:0 3px;
+  cursor:pointer;
+}
+
+.total{
+  font-size:20px;
+  margin-top:10px;
+  color:var(--gold);
+}
+
+/* =====================
+ FORM
+===================== */
+
+input,textarea{
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  background:#1b1b1b;
+  border:1px solid #333;
+  color:#fff;
+}
+
+.submit-btn{
+  width:100%;
+  padding:12px;
+  background:var(--gold);
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* WhatsApp */
+.whatsapp{
+  position:fixed;
+  left:18px;
+  bottom:18px;
+  background:#25D366;
+  color:#fff;
+  padding:12px 16px;
+  border-radius:30px;
+  text-decoration:none;
+  font-size:14px;
+}
+
+/* Animation */
+@keyframes fade{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1}
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>LuxeVault.in</h1>
+<div class="tagline">Premium Luxury Essentials</div>
+</header>
+
+<!-- FILTERS -->
+<div class="filters">
+<button class="filter-btn active" onclick="filterProducts('All')">All</button>
+<button class="filter-btn" onclick="filterProducts('Electronics')">AirPods</button>
+<button class="filter-btn" onclick="filterProducts('Casual')">Shoes</button>
+<button class="filter-btn" onclick="filterProducts('Perfume')">Perfume</button>
+</div>
+
+<!-- PRODUCTS -->
+<div class="grid" id="productGrid"></div>
+
+<!-- CART BUTTON -->
+<div class="cart-float" onclick="openCart()">
+🛒
+<span class="cart-count" id="cartCount">0</span>
+</div>
+
+<!-- CART MODAL -->
+<div class="modal" id="cartModal">
+<div class="modal-content">
+
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
+
+<div class="total" id="grandTotal"></div>
+
+<button class="submit-btn" onclick="openCheckout()">Place Order</button>
+<br><br>
+<button onclick="closeCart()">Close</button>
+
+</div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="modal" id="checkoutModal">
+<div class="modal-content">
+
+<h2>Checkout</h2>
+
+<form id="orderForm"
+action="https://formspree.io/f/YOUR_FORM_ID"
+method="POST">
+
+<input name="customer_name" placeholder="Your Name" required>
+<input name="phone" placeholder="Phone Number" required>
+<textarea name="address" placeholder="Delivery Address" required></textarea>
+<textarea name="notes" placeholder="Special Instructions"></textarea>
+
+<input type="hidden" name="order_summary" id="orderSummary">
+
+<button class="submit-btn">Submit Order</button>
+
+</form>
+
+</div>
+</div>
+
+<!-- WhatsApp -->
+<a class="whatsapp"
+href="https://wa.me/919579697689"
+target="_blank">
+Chat on WhatsApp
+</a>
+
+<script>
+
+/* =====================
+ PRODUCTS
+===================== */
+
+const products=[
+{
+name:"AirPods Pro 2",
+price:2999,
+category:"Electronics",
+img:"https://i.ibb.co/Ld3TcCFQ/06c64a3ed787e540695b91d3a760a028.jpg",
+desc:"Premium wireless AirPods Pro designed for everyday comfort."
+},
+{
+name:"NIKE SB Dunk Low x Travis Scott Bandana",
+price:4499,
+category:"Casual",
+img:"https://i.ibb.co/LhhrN4Lv/photo-2025-06-30-21-27-02.jpg",
+desc:"Luxury shoes."
+},
+{
+name:"Tomford Fabulous EDP 100ML",
+price:8499,
+category:"Perfume",
+img:"https://i.ibb.co/fV8M0BT1/photo-2025-08-05-17-05-14.jpg",
+desc:"Luxury perfume."
+}
+];
+
+let cart=JSON.parse(localStorage.getItem("cart"))||[];
+
+/* =====================
+ RENDER PRODUCTS
+===================== */
+
+function renderProducts(list){
+const grid=document.getElementById("productGrid");
+grid.innerHTML="";
+
+list.forEach((p,i)=>{
+grid.innerHTML+=`
+<div class="card">
+<img src="${p.img}" loading="lazy" alt="${p.name}">
+<div class="card-body">
+<h3>${p.name}</h3>
+<div class="price">₹${p.price}</div>
+<button class="add-btn" onclick="addToCart(${i})">Add to Cart</button>
+</div>
+</div>`;
+});
+}
+
+renderProducts(products);
+
+/* FILTER */
+
+function filterProducts(cat){
+document.querySelectorAll(".filter-btn")
+.forEach(b=>b.classList.remove("active"));
+event.target.classList.add("active");
+
+if(cat==="All") renderProducts(products);
+else renderProducts(products.filter(p=>p.category===cat));
+}
+
+/* =====================
+ CART
+===================== */
+
+function addToCart(i){
+const item=products[i];
+const exist=cart.find(p=>p.name===item.name);
+
+if(exist) exist.qty++;
+else cart.push({...item,qty:1});
+
+saveCart();
+}
+
+function saveCart(){
+localStorage.setItem("cart",JSON.stringify(cart));
+updateCartCount();
+}
+
+function updateCartCount(){
+document.getElementById("cartCount").textContent=
+cart.reduce((a,b)=>a+b.qty,0);
+}
+
+updateCartCount();
+
+/* OPEN CART */
+
+function openCart(){
+document.getElementById("cartModal").style.display="flex";
+renderCart();
+}
+
+function closeCart(){
+document.getElementById("cartModal").style.display="none";
+}
+
+/* RENDER CART */
+
+function renderCart(){
+const container=document.getElementById("cartItems");
+container.innerHTML="";
+
+let total=0;
+
+cart.forEach((item,i)=>{
+let sub=item.price*item.qty;
+total+=sub;
+
+container.innerHTML+=`
+<div class="cart-item">
+<div>
+<strong>${item.name}</strong><br>
+₹${item.price} × ${item.qty}
+</div>
+<div>
+<button class="qty-btn" onclick="changeQty(${i},-1)">-</button>
+<button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+<button onclick="removeItem(${i})">❌</button>
+</div>
+</div>`;
+});
+
+document.getElementById("grandTotal").innerText=
+"Total: ₹"+total;
+}
+
+/* QTY */
+
+function changeQty(i,val){
+cart[i].qty+=val;
+if(cart[i].qty<=0) cart.splice(i,1);
+saveCart();
+renderCart();
+}
+
+function removeItem(i){
+cart.splice(i,1);
+saveCart();
+renderCart();
+}
+
+/* =====================
+ CHECKOUT
+===================== */
+
+function openCheckout(){
+document.getElementById("checkoutModal").style.display="flex";
+buildSummary();
+}
+
+function buildSummary(){
+let text="Order from LuxeVault.in\n\n";
+let total=0;
+
+cart.forEach(i=>{
+text+=`${i.name} — Qty:${i.qty} — ₹${i.price*i.qty}\n`;
+total+=i.price*i.qty;
+});
+
+text+=`\nGrand Total: ₹${total}`;
+
+document.getElementById("orderSummary").value=text;
+}
+
+/* CLEAR AFTER SUBMIT */
+
+document.getElementById("orderForm")
+.addEventListener("submit",()=>{
+localStorage.removeItem("cart");
+cart=[];
+setTimeout(()=>{
+alert("Order placed! LuxeVault.in will contact you on WhatsApp.");
+location.reload();
+},500);
+});
+
+</script>
+
+</body>
+</html>
